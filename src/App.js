@@ -21,8 +21,9 @@ function App() {
   const [endDate, setEndDate] = useState('');   // Formato 'YYYY-MM-DD'
 
   // IMPORTANTE: URL do seu servidor proxy de backend.
-  // Esta URL aponta para o seu backend implantado no Render.
-  const PROXY_BASE_URL = 'https://livepix-proxy-api.onrender.com/api/livepix';
+  // Mude esta URL para a URL PÚBLICA do seu backend online (ex: 'https://seubackend.onrender.com/api/livepix')
+  // quando você implantar seu backend.
+  const PROXY_BASE_URL = 'https://livepix-proxy-api.onrender.com/api/livepix'; // Sua URL do Render
 
   // Função para simular a chegada de novas doações (mantida para testes sem API)
   const simulateNewDonations = useCallback(() => {
@@ -146,12 +147,11 @@ function App() {
         createdAt: d.createdAt // Mantém para o filtro, se necessário (filtro já no backend)
       }));
 
-      setDonations(prevDonations => {
-        // Filtra doações já existentes para evitar duplicatas (se tiver um ID único da API)
-        const existingIds = new Set(prevDonations.map(d => d.id));
-        const uniqueNewDonations = newDonationsFromApi.filter(d => !existingIds.has(d.id));
-        return [...prevDonations, ...uniqueNewDonations];
-      });
+      // Calcula uniqueNewDonations ANTES de atualizar o estado e definir a mensagem
+      const existingIds = new Set(donations.map(d => d.id));
+      const uniqueNewDonations = newDonationsFromApi.filter(d => !existingIds.has(d.id));
+
+      setDonations(prevDonations => [...prevDonations, ...uniqueNewDonations]);
       setMessage(`Buscadas ${newDonationsFromApi.length} doações reais da API. Adicionadas ${uniqueNewDonations.length} novas.`);
     } catch (error) {
       console.error('Erro ao buscar doações da API via proxy:', error);
