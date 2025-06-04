@@ -23,7 +23,7 @@ function App() {
   // IMPORTANTE: URL do seu servidor proxy de backend.
   // Mude esta URL para a URL PÚBLICA do seu backend online (ex: 'https://seubackend.onrender.com/api/livepix')
   // quando você implantar seu backend.
-  const PROXY_BASE_URL = 'https://livepix-proxy-api.onrender.com'; // Use esta para teste LOCAL
+  const PROXY_BASE_URL = 'https://livepix-proxy-api.onrender.com/api/livepix'; // Use esta para teste LOCAL
 
   // Função para simular a chegada de novas doações (mantida para testes sem API)
   const simulateNewDonations = useCallback(() => {
