@@ -72,7 +72,7 @@ function App() {
     }
 
     setIsAuthenticating(true);
-    setMessage('Buscando doações reais da API via proxy...');
+    setMessage('Buscando todos os participantes...');
     setDonations([]); // Limpa a lista de doações existentes antes de buscar
     try {
       // Constrói a URL com os parâmetros de data para o SEU proxy
@@ -218,9 +218,6 @@ function App() {
                 />
               </div>
             </div>
-            <p className="text-sm text-purple-300 italic">
-              O filtro será aplicado nas doações mais recentes que a API do LivePix retornar (até 2000).
-            </p>
           </div>
 
           {/* Botão para buscar doações da API (habilitado apenas com token) */}
