@@ -170,14 +170,13 @@ function App() {
 
       <header className="text-center mb-8">
         <h1 className="text-5xl font-extrabold mb-2 drop-shadow-lg">Sorteio LivePix</h1>
-        <p className="text-xl text-purple-200">Gerencie e sorteie doadores da sua live!</p>
-        <p className="text-md text-purple-300 mt-2">Cada R$10 doados = 1 número da sorte!</p>
+        <p className="text-xl text-purple-200">Cada R$10 doados = 1 número da sorte!</p>
       </header>
 
       <main className="bg-white bg-opacity-10 backdrop-blur-sm rounded-3xl shadow-2xl p-8 w-full max-w-4xl flex flex-col md:flex-row gap-8">
         {/* Seção de Doações */}
         <section className="flex-1 bg-white bg-opacity-5 rounded-2xl p-6 shadow-inner">
-          <h2 className="text-3xl font-bold mb-4 text-purple-200">Pessoas Participantes</h2> {/* Contagem removida aqui */}
+         
 
           {/* Botão de Obter Token de Acesso */}
           <div className="mb-4">
@@ -265,7 +264,7 @@ function App() {
           <div>
             <h2 className="text-3xl font-bold mb-4 text-purple-200">Realizar Sorteio</h2>
             <p className="text-purple-300 mb-6">
-              Clique no botão abaixo para sortear um doador. As chances são baseadas no valor da doação (R$10 = 1 número da sorte).
+              Clique no botão abaixo para sortear um GANHADOR.
             </p>
 
             <button
