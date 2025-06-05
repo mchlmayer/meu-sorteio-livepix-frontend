@@ -173,7 +173,7 @@ function App() {
       <main className="bg-white bg-opacity-10 backdrop-blur-sm rounded-3xl shadow-2xl p-8 w-full max-w-4xl flex flex-col md:flex-row gap-8">
         {/* Seção de Doações */}
         <section className="flex-1 bg-white bg-opacity-5 rounded-2xl p-6 shadow-inner">
-          <h2 className="text-3xl font-bold mb-4 text-purple-200">Doações Recebidas ({donations.length})</h2>
+          <h2 className="text-3xl font-bold mb-4 text-purple-200">Pessoas Participantes ({donations.length})</h2>
 
           {/* Campos de ID do Cliente e Segredo do Cliente REMOVIDOS da UI */}
           {/* O botão de Token agora aciona o backend para usar as variáveis de ambiente */}
