@@ -50,7 +50,7 @@ function App() {
 
       const data = await response.json();
       setAccessToken(data.access_token);
-      setMessage('Token de acesso obtido com sucesso! Agora você pode buscar os participantes.');
+      setMessage('Token de acesso obtido com sucesso! Agora você pode buscar as doações.');
     } catch (error) {
       console.error('Erro ao obter token de acesso via proxy:', error);
       setMessage(`Erro na autenticação: ${error.message}. Verifique as variáveis de ambiente do proxy.`);
@@ -68,7 +68,7 @@ function App() {
     }
 
     setIsAuthenticating(true);
-    setMessage('Buscando participantes...');
+    setMessage('Buscando doações reais da API via proxy...');
     setDonations([]); // Limpa a lista de doações existentes antes de buscar
     try {
       // Constrói a URL com os parâmetros de data para o SEU proxy
@@ -136,7 +136,7 @@ function App() {
     });
 
     if (drawTickets.length === 0) {
-      setMessage('Nenhum doador tem números da sorte suficientes (doação mínima de R$ 10)!');
+      setMessage('Nenhum doador tem números da sorte suficientes (doação mínima de R$10)!');
       setIsDrawing(false);
       return;
     }
@@ -170,7 +170,7 @@ function App() {
       <main className="bg-white bg-opacity-10 backdrop-blur-sm rounded-3xl shadow-2xl p-8 w-full max-w-4xl flex flex-col md:flex-row gap-8">
         {/* Seção de Doações */}
         <section className="flex-1 bg-white bg-opacity-5 rounded-2xl p-6 shadow-inner">
-          <h2 className="text-3xl font-bold mb-4 text-purple-200">Pessoas Participantes {donations.length}</h2>
+          <h2 className="text-3xl font-bold mb-4 text-purple-200">Pessoas Participantes ({donations.length})</h2>
 
           {/* Campos de ID do Cliente e Segredo do Cliente REMOVIDOS da UI */}
           <div className="mb-4">
@@ -213,7 +213,7 @@ function App() {
               </div>
             </div>
             <p className="text-sm text-purple-300 italic">
-              //O filtro será aplicado nas doações mais recentes que a API do LivePix retornar (até 2000).
+              O filtro será aplicado nas doações mais recentes que a API do LivePix retornar (até 2000).
             </p>
           </div>
 
@@ -258,7 +258,7 @@ function App() {
           <div>
             <h2 className="text-3xl font-bold mb-4 text-purple-200">Realizar Sorteio</h2>
             <p className="text-purple-300 mb-6">
-              Clique no botão abaixo para sortear um GANHADOR. As chances são baseadas no valor da doação (R$ 10 = 1 número da sorte).
+              Clique no botão abaixo para sortear um doador. As chances são baseadas no valor da doação (R$10 = 1 número da sorte).
             </p>
 
             <button
