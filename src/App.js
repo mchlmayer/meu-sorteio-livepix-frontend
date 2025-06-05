@@ -1,31 +1,28 @@
-import React, { useState, useEffect, useCallback } from 'react'; // useEffect e useCallback estão importados aqui
+// Caminho: meu-sorteio-livepix-frontend/src/App.js
+
+import React, { useState, useEffect, useCallback } from 'react';
 
 // Certifique-se de que o Tailwind CSS está carregado no ambiente.
 // Por exemplo, em um arquivo HTML, você pode ter:
 // <script src="https://cdn.tailwindcss.com"></script>
 
 function App() {
-  const [donations, setDonations] = useState([]); // Armazena as doações únicas
+  const [donations, setDonations] = useState([]);
   const [winner, setWinner] = useState(null);
   const [isDrawing, setIsDrawing] = useState(false);
   const [message, setMessage] = useState('');
 
-  // Estados para a autenticação OAuth2 (ID e Segredo estão de volta no estado do frontend)
-  const [clientId, setClientId] = useState('');
-  const [clientSecret, setClientSecret] = useState('');
+  // Remover clientId e clientSecret do estado local, pois são lidos do backend
   const [accessToken, setAccessToken] = useState('');
   const [isAuthenticating, setIsAuthenticating] = useState(false);
 
-  // Estados para o filtro de período
-  const [startDate, setStartDate] = useState(''); // Formato 'YYYY-MM-DD'
-  const [endDate, setEndDate] = '';   // Formato 'YYYY-MM-DD'
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
 
-  // IMPORTANTE: URL do seu servidor proxy de backend.
-  // Mude esta URL para a URL PÚBLICA do seu backend online (ex: 'https://seubackend.onrender.com/api/livepix')
-  // quando você implantar seu backend.
+  // IMPORTANTE: Esta URL deve apontar para o seu backend implantado no Render.
   const PROXY_BASE_URL = 'https://livepix-proxy-api.onrender.com/api/livepix'; // Sua URL do Render
 
-  // Função para simular a chegada de novas doações (mantida para testes sem API)
+  // Função para simular a chegada de novas doações (mantida)
   const simulateNewDonations = useCallback(() => {
     const newDonors = [
       { name: 'Alice', amount: 10.00, message: 'Boa sorte a todos!', createdAt: '2025-05-20T10:00:00Z' },
@@ -63,30 +60,23 @@ function App() {
   }, []);
 
   useEffect(() => {
-    // Este useEffect ainda está aqui, e simula doações iniciais ao carregar.
+    // Este useEffect inicial simula doações ao carregar.
     simulateNewDonations();
-  }, [simulateNewDonations]); // Usa useCallback e useEffect aqui
+  }, [simulateNewDonations]);
 
 
-  // Função para obter o Access Token REAL via seu servidor proxy
   const getAccessToken = async () => {
-    // Nesta versão, as credenciais são enviadas do frontend para o backend
-    if (!clientId || !clientSecret) {
-      setMessage('Por favor, insira o ID do Cliente e o Segredo do Cliente.');
-      return;
-    }
-
+    // Credenciais não são mais inseridas no frontend, mas o backend as requer das variáveis de ambiente.
     setIsAuthenticating(true);
     setMessage('Obtendo token de acesso via proxy...');
     try {
-      // A requisição vai para o SEU servidor proxy, que então fala com o LivePix OAuth
       const response = await fetch(`${PROXY_BASE_URL}/token`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        // Enviamos clientId e clientSecret para o nosso proxy no corpo da requisição.
-        body: JSON.stringify({ clientId, clientSecret }),
+        // Não enviamos clientId e clientSecret no corpo, pois o backend os lê das variáveis de ambiente.
+        body: JSON.stringify({}), // Envia um corpo vazio
       });
 
       if (!response.ok) {
@@ -99,14 +89,13 @@ function App() {
       setMessage('Token de acesso obtido com sucesso! Agora você pode buscar as doações.');
     } catch (error) {
       console.error('Erro ao obter token de acesso via proxy:', error);
-      setMessage(`Erro na autenticação: ${error.message}. Verifique suas credenciais e se o proxy está rodando.`);
-      setAccessToken(''); // Limpa o token em caso de erro
+      setMessage(`Erro na autenticação: ${error.message}. Verifique as variáveis de ambiente do proxy.`);
+      setAccessToken('');
     } finally {
       setIsAuthenticating(false);
     }
   };
 
-  // Função para buscar doações REAIS da API do LivePix via seu servidor proxy
   const fetchDonationsFromApi = async () => {
     if (!accessToken) {
       setMessage('Por favor, obtenha um token de acesso primeiro.');
@@ -116,18 +105,16 @@ function App() {
     setIsAuthenticating(true);
     setMessage('Buscando doações reais da API via proxy...');
     try {
-      // Constrói a URL com os parâmetros de data para o SEU proxy
       const queryParams = new URLSearchParams();
       if (startDate) queryParams.append('startDate', startDate);
       if (endDate) queryParams.append('endDate', endDate);
 
       const url = `${PROXY_BASE_URL}/messages?${queryParams.toString()}`;
 
-      // A requisição vai para o SEU servidor proxy, que então fala com a API LivePix
       const response = await fetch(url, {
         method: 'GET',
         headers: {
-          'Authorization': `Bearer ${accessToken}`, // Enviamos o token para o nosso proxy
+          'Authorization': `Bearer ${accessToken}`,
           'Content-Type': 'application/json',
         },
       });
@@ -138,14 +125,13 @@ function App() {
       }
       const result = await response.json();
 
-      // Mapeia os dados da API LivePix para o formato que a aplicação espera
       const newDonationsFromApi = result.data.map(d => ({
         id: d.id,
         name: d.username || 'Doador Anônimo',
-        amount: d.amount / 100, // A API retorna em centavos, então divida por 100
+        amount: d.amount / 100,
         message: d.message || 'Sem mensagem',
         timestamp: new Date(d.createdAt).toLocaleTimeString(),
-        createdAt: d.createdAt // Mantém para o filtro, se necessário (filtro já no backend)
+        createdAt: d.createdAt
       }));
 
       const existingIds = new Set(donations.map(d => d.id));
@@ -161,7 +147,6 @@ function App() {
     }
   };
 
-  // Função para realizar o sorteio com base nos números da sorte
   const drawWinner = () => {
     if (donations.length === 0) {
       setMessage('Não há doações para sortear!');
@@ -173,12 +158,11 @@ function App() {
     setWinner(null);
     setMessage('Sorteando...');
 
-    // Cria a lista de "bilhetes" para o sorteio, considerando R$10 = 1 número da sorte
     const drawTickets = [];
     donations.forEach(donation => {
       const numTickets = Math.floor(donation.amount / 10);
       for (let i = 0; i < numTickets; i++) {
-        drawTickets.push(donation); // Adiciona o objeto da doação para cada "número da sorte"
+        drawTickets.push(donation);
       }
     });
 
@@ -188,7 +172,6 @@ function App() {
       return;
     }
 
-    // Simula um "giro" antes de revelar o vencedor
     let countdown = 3;
     const interval = setInterval(() => {
       setMessage(`Sorteando... ${countdown}...`);
@@ -196,7 +179,6 @@ function App() {
       if (countdown < 0) {
         clearInterval(interval);
 
-        // Lógica de sorteio: seleciona um bilhete aleatoriamente
         const randomIndex = Math.floor(Math.random() * drawTickets.length);
         const selectedWinner = drawTickets[randomIndex];
         setWinner(selectedWinner);
@@ -221,37 +203,11 @@ function App() {
         <section className="flex-1 bg-white bg-opacity-5 rounded-2xl p-6 shadow-inner">
           <h2 className="text-3xl font-bold mb-4 text-purple-200">Pessoas Participantes ({donations.length})</h2>
 
-          {/* Campos de ID do Cliente e Segredo do Cliente MOVIDOS DE VOLTA PARA A UI */}
+          {/* Os campos de ID do Cliente e Segredo do Cliente foram removidos daqui */}
           <div className="mb-4">
-            <label htmlFor="client-id" className="block text-purple-200 text-sm font-bold mb-2">
-              ID do Cliente LivePix:
-            </label>
-            <input
-              type="text"
-              id="client-id"
-              value={clientId}
-              onChange={(e) => setClientId(e.target.value)}
-              placeholder="Seu ID de cliente aqui"
-              className="shadow appearance-none border rounded-xl w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-white bg-opacity-80"
-            />
-          </div>
-
-          {/* Campo para Client Secret */}
-          <div className="mb-4">
-            <label htmlFor="client-secret" className="block text-purple-200 text-sm font-bold mb-2">
-              Segredo do Cliente LivePix:
-            </label>
-            <input
-              type="password" // Usar tipo password para esconder o segredo
-              id="client-secret"
-              value={clientSecret}
-              onChange={(e) => setClientSecret(e.target.value)}
-              placeholder="Seu segredo de cliente aqui"
-              className="shadow appearance-none border rounded-xl w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-white bg-opacity-80"
-            />
             <button
               onClick={getAccessToken}
-              disabled={isAuthenticating || !!accessToken} // Desabilita se já autentando ou se já tem token
+              disabled={isAuthenticating || !!accessToken}
               className="mt-2 w-full bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-4 rounded-xl shadow-md transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-yellow-300"
             >
               {isAuthenticating ? 'Obtendo Token...' : (accessToken ? 'Token Obtido!' : 'Obter Token de Acesso')}
@@ -288,7 +244,7 @@ function App() {
               </div>
             </div>
             <p className="text-sm text-purple-300 italic">
-              O filtro será aplicado nas doações mais recentes que a API do LivePix retornar (até 100).
+              O filtro será aplicado nas doações mais recentes que a API do LivePix retornar (até 2000).
             </p>
           </div>
 
@@ -296,7 +252,7 @@ function App() {
           <div className="mb-4">
             <button
               onClick={fetchDonationsFromApi}
-              disabled={isAuthenticating || !accessToken} // Requer token para buscar
+              disabled={isAuthenticating || !accessToken}
               className="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-6 rounded-xl shadow-lg transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-blue-300"
             >
               {isAuthenticating ? 'Buscando Doações...' : 'Buscar Doações da API'}
