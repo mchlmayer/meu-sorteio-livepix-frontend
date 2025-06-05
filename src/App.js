@@ -170,7 +170,7 @@ function App() {
 
       <header className="text-center mb-8">
         <img
-          src="https://i.ibb.co/LXgqDW7N/Gemini-Generated-Image-lnxkeclnxkeclnxk.png" // <-- Coloque a URL da sua logo aqui
+          src="https://i.ibb.co/Q7X1ZpyK/Gemini-Generated-Image-lnxkeclnxkeclnxk.png" // <-- Coloque a URL da sua logo aqui
           alt="Logo Sorteio LivePix"
           className="mx-auto mb-4 rounded-lg shadow-lg"
           // Um fallback caso a imagem não carregue
