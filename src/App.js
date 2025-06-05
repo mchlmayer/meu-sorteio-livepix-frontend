@@ -170,11 +170,11 @@ function App() {
 
       <header className="text-center mb-8">
         <img
-          src="https://ibb.co/Rk6MGmwj" // <-- Coloque a URL da sua logo aqui
+          src="https://i.ibb.co/LXgqDW7N/Gemini-Generated-Image-lnxkeclnxkeclnxk.png" // <-- Coloque a URL da sua logo aqui
           alt="Logo Sorteio LivePix"
           className="mx-auto mb-4 rounded-lg shadow-lg"
           // Um fallback caso a imagem não carregue
-          onError={(e) => { e.target.onerror = null; e.target.src = "https://ibb.co/Rk6MGmwj"; }}
+          onError={(e) => { e.target.onerror = null; e.target.src = "https://placehold.co/300x80/6A0DAD/FFFFFF?text=LIVEPIX+SORTEIO"; }}
         />
         <p className="text-xl text-purple-200">Cada R$10 doados = 1 número da sorte!</p>
       </header>
