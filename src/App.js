@@ -172,7 +172,7 @@ function App() {
         <img
           src="https://i.ibb.co/Q7X1ZpyK/Gemini-Generated-Image-lnxkeclnxkeclnxk.png" // <-- Coloque a URL da sua logo aqui
           alt="Logo Sorteio LivePix"
-          className="mx-auto mb-4 rounded-lg shadow-lg"
+          className="mx-auto mb-4"
           // Um fallback caso a imagem não carregue
           onError={(e) => { e.target.onerror = null; e.target.src = "https://placehold.co/300x80/6A0DAD/FFFFFF?text=LIVEPIX+SORTEIO"; }}
         />
