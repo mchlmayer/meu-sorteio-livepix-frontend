@@ -1,4 +1,4 @@
-import React, { useState } from 'react'; // useEffect e useCallback removidos, pois não são mais usados
+import React, { useState } from 'react'; // Apenas useState é necessário aqui
 
 // Certifique-se de que o Tailwind CSS está carregado no ambiente.
 // Por exemplo, em um arquivo HTML, você pode ter:
@@ -16,13 +16,17 @@ function App() {
 
   // Estados para o filtro de período
   const [startDate, setStartDate] = useState(''); // Formato 'YYYY-MM-DD'
-  const [endDate, setEndDate] = '';   // Formato 'YYYY-MM-DD'
+  const [endDate, setEndDate] = useState('');   // Formato 'YYYY-MM-DD'
+
+  // Estados para o modal de participantes
+  const [showParticipantsModal, setShowParticipantsModal] = useState(false);
+  const [participantsModalContent, setParticipantsModalContent] = useState('');
 
   // IMPORTANTE: URL do seu servidor proxy de backend.
   // Esta URL aponta para o seu backend implantado no Render.
   const PROXY_BASE_URL = 'https://livepix-proxy-api.onrender.com/api/livepix'; // Sua URL do Render
 
-  // A função simulateNewDonations e o useEffect inicial foram removidos permanentemente.
+  // Funções de simulação de doações (simulateNewDonations e useEffect) foram removidas.
   // A aplicação agora dependerá exclusivamente da busca da API real.
 
 
@@ -107,7 +111,10 @@ function App() {
       const uniqueNewDonations = Array.from(new Map(newDonationsFromApi.map(item => [item['id'], item])).values());
 
       setDonations(uniqueNewDonations); // Define as doações, não as adiciona
-      setMessage(`Total de participantes: ${uniqueNewDonations.length}`); // Mensagem atualizada
+      // Define a mensagem para o modal e o mostra
+      setParticipantsModalContent(`Total de participantes: ${uniqueNewDonations.length}`);
+      setShowParticipantsModal(true);
+      setMessage(''); // Limpa a mensagem principal, pois a contagem estará no modal
     } catch (error) {
       console.error('Erro ao buscar doações da API via proxy:', error);
       setMessage(`Erro ao buscar doações: ${error.message}. Verifique o token e se o proxy está rodando.`);
@@ -170,9 +177,9 @@ function App() {
       <main className="bg-white bg-opacity-10 backdrop-blur-sm rounded-3xl shadow-2xl p-8 w-full max-w-4xl flex flex-col md:flex-row gap-8">
         {/* Seção de Doações */}
         <section className="flex-1 bg-white bg-opacity-5 rounded-2xl p-6 shadow-inner">
-          <h2 className="text-3xl font-bold mb-4 text-purple-200">Pessoas Participantes ({donations.length})</h2>
+          <h2 className="text-3xl font-bold mb-4 text-purple-200">Pessoas Participantes</h2> {/* Contagem removida aqui */}
 
-          {/* Campos de ID do Cliente e Segredo do Cliente REMOVIDOS da UI */}
+          {/* Botão de Obter Token de Acesso */}
           <div className="mb-4">
             <button
               onClick={getAccessToken}
@@ -293,6 +300,21 @@ function App() {
           </div>
         </section>
       </main>
+
+      {/* NOVO: Modal para exibir o total de participantes */}
+      {showParticipantsModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white bg-opacity-90 rounded-3xl p-8 shadow-2xl text-center text-purple-900 max-w-sm w-full">
+            <h3 className="text-3xl font-extrabold mb-4">{participantsModalContent}</h3>
+            <button
+              onClick={() => setShowParticipantsModal(false)}
+              className="mt-6 bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-6 rounded-xl shadow-lg transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-purple-300"
+            >
+              Fechar
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* Estilos personalizados para a barra de rolagem */}
       <style>{`
