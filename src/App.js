@@ -108,7 +108,7 @@ function App() {
 
     setIsAuthenticating(true);
     setMessage('Buscando doações reais da API via proxy...');
-    setDonations([]); // NOVO: Limpa a lista de doações existentes antes de buscar
+    setDonations([]); // Limpa a lista de doações existentes antes de buscar
     try {
       // Constrói a URL com os parâmetros de data para o SEU proxy
       const queryParams = new URLSearchParams();
@@ -145,8 +145,8 @@ function App() {
       // Apenas filtra por doações únicas, se houver duplicatas da API
       const uniqueNewDonations = Array.from(new Map(newDonationsFromApi.map(item => [item['id'], item])).values());
 
-      setDonations(uniqueNewDonations); // ATUALIZADO: Define as doações, não as adiciona
-      setMessage(`Buscadas ${uniqueNewDonations.length} doações reais da API.`);
+      setDonations(uniqueNewDonations); // Define as doações, não as adiciona
+      setMessage(`Total de participantes: ${uniqueNewDonations.length}`); // NOVO: Mensagem atualizada
     } catch (error) {
       console.error('Erro ao buscar doações da API via proxy:', error);
       setMessage(`Erro ao buscar doações: ${error.message}. Verifique o token e se o proxy está rodando.`);
@@ -263,7 +263,7 @@ function App() {
               disabled={isAuthenticating || !accessToken}
               className="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-6 rounded-xl shadow-lg transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-blue-300"
             >
-              {isAuthenticating ? 'Buscando Doações...' : 'Buscar Doações da API'}
+              {isAuthenticating ? 'Buscando Participantes...' : 'Buscar Participantes'}
             </button>
           </div>
 
@@ -348,10 +348,6 @@ function App() {
           background-color: rgba(192, 132, 252, 0.7); /* purple-300 com opacidade */
           border-radius: 10px;
           border: 2px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-          background-color: rgba(192, 132, 252, 1); /* purple-300 */
         }
 
         @keyframes fade-in {
