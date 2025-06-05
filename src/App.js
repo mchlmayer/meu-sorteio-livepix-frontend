@@ -7,7 +7,7 @@ import React, { useState } from 'react'; // Apenas useState é necessário aqui
 function App() {
   const [donations, setDonations] = useState([]); // Armazena as doações únicas
   const [winner, setWinner] = useState(null);
-  const [isDrawing, setIsDrawing] = useState(false);
+  const [isDrawing, setIsDrawing]s = useState(false);
   const [message, setMessage] = useState('');
 
   // Estados para a autenticação OAuth2 (ID e Segredo NÃO estão mais no estado do frontend)
