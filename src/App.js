@@ -22,6 +22,25 @@ function App() {
   // Esta URL aponta para o seu backend implantado no Render.
   const PROXY_BASE_URL = 'https://livepix-proxy-api.onrender.com/api/livepix'; // Sua URL do Render
 
+  // Função para simular a chegada de novas doações (mantida, pois o usuário solicitou a versão com ela)
+  const simulateNewDonations = useCallback(() => {
+    const newDonors = [
+      { name: 'Alice', amount: 10.00, message: 'Boa sorte a todos!', createdAt: '2025-05-20T10:00:00Z' },
+      { name: 'Bob', amount: 25.50, message: 'Mandando uma força!', createdAt: '2025-05-22T11:30:00Z' },
+      { name: 'Charlie', amount: 5.00, message: 'Pequena ajuda!', createdAt: '2025-05-25T12:00:00Z' },
+      { name: 'Diana', amount: 50.00, message: 'Pra ajudar na live!', createdAt: '2025-05-28T13:45:00Z' },
+      { name: 'Eduardo', amount: 15.00, message: 'Tamo junto!', createdAt: '2025-06-01T14:00:00Z' },
+      { name: 'Fernanda', amount: 30.00, message: 'Adoro seu conteúdo!', createdAt: '2025-06-03T15:10:00Z' },
+      { name: 'Gustavo', amount: 7.50, message: 'Valeu!', createdAt: '2025-06-05T16:00:00Z' },
+      { name: 'Helena', amount: 20.00, message: 'Um abraço!', createdAt: '2025-06-08T17:20:00Z' },
+      { name: 'Igor', amount: 12.00, message: 'Mandando um pix!', createdAt: '2025-06-10T18:00:00Z' },
+      { name: 'Julia', amount: 40.00, message: 'Que a sorte esteja comigo!', createdAt: '2025-06-12T19:30:00Z' },
+      { name: 'Karen', amount: 100.00, message: 'Sou fã!', createdAt: '2025-06-15T20:00:00Z' },
+      { name: 'Luiz', amount: 20.00, message: 'Show de bola!', createdAt: '2025-06-18T21:00:00Z' },
+      { name: 'Monica', amount: 5.00, message: 'Contribuição!', createdAt: '2025-06-20T22:00:00Z' },
+      { name: 'Nuno', amount: 75.00, message: 'Arrasou!', createdAt: '2025-06-22T23:00:00Z' },
+      { name: 'Olivia', amount: 18.00, message: 'Sempre apoiando!', createdAt: '2025-06-25T08:00:00Z' },
+    ];
 
     const numNew = Math.floor(Math.random() * 3) + 1;
     const addedDonations = [];
