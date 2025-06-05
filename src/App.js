@@ -174,7 +174,7 @@ function App() {
           alt="Logo Sorteio LivePix"
           className="mx-auto mb-4 rounded-lg shadow-lg"
           // Um fallback caso a imagem não carregue
-          onError={(e) => { e.target.onerror = null; e.target.src = "https://placehold.co/300x80/6A0DAD/FFFFFF?text=LIVEPIX+SORTEIO"; }}
+          onError={(e) => { e.target.onerror = null; e.target.src = "https://ibb.co/Rk6MGmwj"; }}
         />
         <p className="text-xl text-purple-200">Cada R$10 doados = 1 número da sorte!</p>
       </header>
